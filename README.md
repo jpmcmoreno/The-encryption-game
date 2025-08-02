@@ -11,5 +11,5 @@
 2. Introduce tu solución en el formato requerido
 3. Supera todas las reglas para ganar
 
-**¿Te atreves a desafiar el cifrado?** [Jugar Ahora](https://.............)  
+**¿Te atreves a desafiar el cifrado?** [Jugar Ahora](https://jpmcmoreno.github.io/The-encryption-game/)  
 *"Las matemáticas son el lenguaje con el que Dios escribió el universo" - Galileo Galilei*
