@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>The encryption game</title>
+  <style>
+    
+    body{
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+    }
+
+    input{
+      width: 100%;
+      padding: 10px;
+      font-size: 1.2em;
+    }
+
+    li{
+      margin-top: 10px;
+      font-size: 1.1em;
+    }
+
+    .ok{ color: green;}
+    .fail{ color: red;}
+    .oculto {
+      display: none;
+    }
+
+
+  </style>
+</head>
+<body>
+  
+  <h1>The encryption game</h1>
+  <input type="text" id="password" placeholder="Escribe tu contraseña aquí">
+  
+  <ul>
+    <li id="regla1"> Debe tener al menos un número </li>
+    <li id="regla2" class="oculto">No puede tener la palabra “hola”</li>
+    <li id="regla3" class="oculto">Responde cuánto es 1 + 1</li>
+  </ul>
+
+  <script>
+    const input = document.getElementById('password');
+    
+    const regla1 = document.getElementById('regla1');
+    const regla2 = document.getElementById('regla2');
+    let regla2Visible = false;
+    const regla3 = document.getElementById('regla3');
+    let regla3Visible = false;
+    
+
+  input.addEventListener('input', function () {
+    const valor = input.value;
+    const partes = valor.split('#');
+
+    // Regla 1: al menos un número en alguna parte
+    if (partes.some(p => /[0-9]/.test(p))) {
+      regla1.textContent = '✅ Debe tener al menos un número';
+      regla1.className = 'ok';
+
+      if (!regla2Visible) {
+        regla2.classList.remove('oculto');
+        regla2Visible = true;
+      }
+    } else {
+      regla1.textContent = '❌ Debe tener al menos un número';
+      regla1.className = 'fail';
+    }
+
+    // Regla 2: ninguna parte puede contener "hola"
+    if (regla2Visible) {
+      if (partes.some(p => !p.toLowerCase().includes('hola'))) {
+        regla2.textContent = '✅ No puede tener la palabra “hola”';
+        regla2.className = 'ok';
+
+        if (!regla3Visible) {
+          regla3.classList.remove('oculto');
+          regla3Visible = true;
+        }
+      } else {
+        regla2.textContent = '❌ No puede tener la palabra “hola”';
+        regla2.className = 'fail';
+      }
+    }
+
+    // Regla 3: alguna parte contiene '2'
+    if (regla3Visible) {
+      if (partes.some(p => p.includes('2'))) {
+        regla3.textContent = '✅ Responde cuánto es 1 + 1';
+        regla3.className = 'ok';
+      } else {
+        regla3.textContent = '❌ Responde cuánto es 1 + 1';
+        regla3.className = 'fail';
+      }
+    }
+  });
+
+  </script>
+
+</body>
+</html>
