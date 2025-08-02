@@ -4,101 +4,142 @@
   <meta charset="UTF-8">
   <title>The encryption game</title>
   <style>
-    
-    body{
+    body {
       font-family: sans-serif;
       max-width: 600px;
       margin: 50px auto;
     }
 
-    input{
+    input {
       width: 100%;
       padding: 10px;
       font-size: 1.2em;
     }
 
-    li{
+    li {
       margin-top: 10px;
       font-size: 1.1em;
     }
 
-    .ok{ color: green;}
-    .fail{ color: red;}
-    .oculto {
-      display: none;
-    }
-
-
+    .ok { color: green; }
+    .fail { color: red; }
+    .oculto { display: none; }
   </style>
 </head>
 <body>
-  
-  <h1>The encryption game</h1>
+  <h1>The # encryption # game</h1>
+
+  <h2> Para seguir cifrando por favor agregar un '#' </h2>
+
   <input type="text" id="password" placeholder="Escribe tu contraseña aquí">
-  
+
+
   <ul>
-    <li id="regla1"> Debe tener al menos un número </li>
-    <li id="regla2" class="oculto">No puede tener la palabra “hola”</li>
-    <li id="regla3" class="oculto">Responde cuánto es 1 + 1</li>
+    <li id="regla20" class="oculto" data-texto="Regla 20: La encriptación debe incluir el número log_5(3125) + log_8(4096) + log_200(200)"> Regla 20: La encriptación debe incluir el número log_5(3125) + log_8(4096) + log_200(200) </li>
+    <li id="regla19" class="oculto" data-texto="Regla 19: La encriptación debe incluir el número log_10(100)"> Regla 19: La encriptación debe incluir el número log_10(100) </li>
+    <li id="regla18" class="oculto" data-texto="Regla 18: La encriptación debe incluir el número 5^5 + 9^4 + 8^4"> Regla 18: La encriptación debe incluir el número 5^5 + 9^4 + 8^4 </li>
+    <li id="regla17" class="oculto" data-texto="Regla 17: La encriptación debe incluir el número 2^9"> Regla 17: La encriptación debe incluir el número 2^9 </li> 
+    <li id="regla16" class="oculto" data-texto="Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división 11 ÷ 3"> Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división 11 ÷ 3 </li> 
+    <li id="regla15" class="oculto" data-texto="Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división 11 ÷ 3"> Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división 11 ÷ 3 </li>
+    <li id="regla14" class="oculto" data-texto="Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división 11 ÷ 3"> Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división 11 ÷ 3 </li>
+    <li id="regla13" class="oculto" data-texto="Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división 11 ÷ 3"> Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división 11 ÷ 3 </li>
+    <li id="regla12" class="oculto" data-texto="Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división 11 ÷ 3"> Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división 11 ÷ 3 </li>
+    <li id="regla11" class="oculto" data-texto="Regla 11: La encriptación debe incluir el número 200 ÷ 10"> Regla 11: La encriptación debe incluir el número 200 ÷ 10 </li>
+    <li id="regla10" class="oculto" data-texto="Regla 10: La encriptación debe incluir el número 100 ÷ 10"> Regla 10: La encriptación debe incluir el número 100 ÷ 10 </li>
+    <li id="regla9" class="oculto" data-texto="Regla 9: La encriptación debe incluir el número 8 ÷ 2"> Regla 9: La encriptación debe incluir el número 8 ÷ 2 </li>
+    <li id="regla8" class="oculto" data-texto="Regla 8: La encriptación debe incluir el número 985 x 472 + 1458"> Regla 8: La encriptación debe incluir el número 985 x 472 + 1458 </li>
+    <li id="regla7" class="oculto" data-texto="Regla 7: La encriptación debe incluir el número 389 x -545"> Regla 7: La encriptación debe incluir el número 389 x -545 </li>
+    <li id="regla6" class="oculto" data-texto="Regla 6: La encriptación debe incluir el número 12 x -15"> Regla 6: La encriptación debe incluir el número 12 x -15 </li>
+    <li id="regla5" class="oculto" data-texto="Regla 5: La encriptación debe incluir el número 5 x 5"> Regla 5: La encriptación debe incluir el número 5 x 5 </li>
+    <li id="regla4" class="oculto" data-texto="Regla 4: La encriptación debe incluir el número 489.654 - 652.389"> Regla 4: La encriptación debe incluir el número 489.654 - 652.389 </li>
+    <li id="regla3" class="oculto" data-texto="Regla 3: La encriptación debe incluir el número 127.452 + 385.635"> Regla 3: La encriptación debe incluir el número 127.452 + 385.635 </li>
+    <li id="regla2" class="oculto" data-texto="Regla 2: La encriptacion debe incluir el número es 8 - 5">Regla 2: La encriptacion debe incluir el número es 8 - 5</li>
+    <li id="regla1" data-texto="Regla 1: La encriptacion debe incluir el número es 1 + 1"> Regla 1: La encriptacion debe incluir el número es 1 + 1</li>
   </ul>
 
   <script>
     const input = document.getElementById('password');
-    
-    const regla1 = document.getElementById('regla1');
-    const regla2 = document.getElementById('regla2');
-    let regla2Visible = false;
-    const regla3 = document.getElementById('regla3');
-    let regla3Visible = false;
-    
 
-  input.addEventListener('input', function () {
-    const valor = input.value;
-    const partes = valor.split('#');
+    const reglas = [
+      document.getElementById('regla1'),
+      document.getElementById('regla2'),
+      document.getElementById('regla3'),
+      document.getElementById('regla4'),
+      document.getElementById('regla5'),
+      document.getElementById('regla6'),
+      document.getElementById('regla7'),
+      document.getElementById('regla8'),
+      document.getElementById('regla9'),
+      document.getElementById('regla10'),
+      document.getElementById('regla11'),
+      document.getElementById('regla12'),
+      document.getElementById('regla13'),
+      document.getElementById('regla14'),
+      document.getElementById('regla15'),
+      document.getElementById('regla16'),
+      document.getElementById('regla17'),
+      document.getElementById('regla18'),
+      document.getElementById('regla19'),
+      document.getElementById('regla20')
+      
+    ];
 
-    // Regla 1: al menos un número en alguna parte
-    if (partes.some(p => /[0-9]/.test(p))) {
-      regla1.textContent = '✅ Debe tener al menos un número';
-      regla1.className = 'ok';
+    const respuestasValidas = [
+      ['2'],   // regla 1
+      ['3'],   // regla 2
+      ['513087'],   // regla 3
+      ['-162735'], // regla 4
+      ['25'], // regla 5
+      ['-180'], // regla 6
+      ['-212005'], // regla 7
+      ['466378'], // regla 8
+      ['2'], // regla 9
+      ['10'], // regla 10
+      ['20'], // regla 11
+      ['11'], // regla 12
+      ['3'], // regla 13
+      ['3'], // regla 14
+      ['2'], // regla 15
+      ['198'], // regla 16
+      ['512'], // regla 17
+      ['13782'], // regla 18
+      ['2'], // regla 19
+      ['10'] // regla 20
+    ];
 
-      if (!regla2Visible) {
-        regla2.classList.remove('oculto');
-        regla2Visible = true;
-      }
-    } else {
-      regla1.textContent = '❌ Debe tener al menos un número';
-      regla1.className = 'fail';
-    }
+    const desbloqueadas = [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
 
-    // Regla 2: ninguna parte puede contener "hola"
-    if (regla2Visible) {
-      if (partes.some(p => !p.toLowerCase().includes('hola'))) {
-        regla2.textContent = '✅ No puede tener la palabra “hola”';
-        regla2.className = 'ok';
+    input.addEventListener('input', () => {
+      const partes = input.value.split('#').map(p => p.trim());
+      let todasCorrectas = true;
 
-        if (!regla3Visible) {
-          regla3.classList.remove('oculto');
-          regla3Visible = true;
+      for (let i = 0; i < reglas.length; i++) {
+        const regla = reglas[i];
+        const respuestas = respuestasValidas[i];
+
+        if (desbloqueadas[i]) {
+          regla.classList.remove('oculto');
+          const coincide = partes.some(parte => respuestas.includes(parte));
+          if (coincide) {
+            regla.className = 'ok';
+          } else {
+            regla.className = 'fail';
+            todasCorrectas = false;
+          }
+          regla.textContent = regla.dataset.texto;
+        } else {
+          // Solo se desbloquea la siguiente si todas las anteriores están correctas
+          if (todasCorrectas) {
+            desbloqueadas[i] = true;
+            reglas[i].classList.remove('oculto');
+            // IMPORTANTE: detenemos aquí para evitar desbloquear más de una por input
+            break;
+          } else {
+            break; // si anteriores están mal, no desbloquees esta ni las siguientes
+          }
         }
-      } else {
-        regla2.textContent = '❌ No puede tener la palabra “hola”';
-        regla2.className = 'fail';
       }
-    }
-
-    // Regla 3: alguna parte contiene '2'
-    if (regla3Visible) {
-      if (partes.some(p => p.includes('2'))) {
-        regla3.textContent = '✅ Responde cuánto es 1 + 1';
-        regla3.className = 'ok';
-      } else {
-        regla3.textContent = '❌ Responde cuánto es 1 + 1';
-        regla3.className = 'fail';
-      }
-    }
-  });
-
+    });
   </script>
-
 </body>
 </html>
