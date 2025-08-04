@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>The encryption game</title>
+
   <style>
     body {
       font-family: sans-serif;
@@ -25,6 +26,7 @@
     .fail { color: red; }
     .oculto { display: none; }
   </style>
+
 </head>
 <body>
   <h1>The # encryption # game</h1>
@@ -33,81 +35,278 @@
 
   <input type="text" id="password" placeholder="Escribe tu contraseña aquí">
 
-
-  <ul>
-    <li id="regla20" class="oculto" data-texto="Regla 20: La encriptación debe incluir el número log_5(3125) + log_8(4096) + log_200(200)"> Regla 20: La encriptación debe incluir el número log_5(3125) + log_8(4096) + log_200(200) </li>
-    <li id="regla19" class="oculto" data-texto="Regla 19: La encriptación debe incluir el número log_10(100)"> Regla 19: La encriptación debe incluir el número log_10(100) </li>
-    <li id="regla18" class="oculto" data-texto="Regla 18: La encriptación debe incluir el número 5^5 + 9^4 + 8^4"> Regla 18: La encriptación debe incluir el número 5^5 + 9^4 + 8^4 </li>
-    <li id="regla17" class="oculto" data-texto="Regla 17: La encriptación debe incluir el número 2^9"> Regla 17: La encriptación debe incluir el número 2^9 </li> 
-    <li id="regla16" class="oculto" data-texto="Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división 11 ÷ 3"> Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división 11 ÷ 3 </li> 
-    <li id="regla15" class="oculto" data-texto="Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división 11 ÷ 3"> Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división 11 ÷ 3 </li>
-    <li id="regla14" class="oculto" data-texto="Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división 11 ÷ 3"> Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división 11 ÷ 3 </li>
-    <li id="regla13" class="oculto" data-texto="Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división 11 ÷ 3"> Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división 11 ÷ 3 </li>
-    <li id="regla12" class="oculto" data-texto="Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división 11 ÷ 3"> Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división 11 ÷ 3 </li>
-    <li id="regla11" class="oculto" data-texto="Regla 11: La encriptación debe incluir el número 200 ÷ 10"> Regla 11: La encriptación debe incluir el número 200 ÷ 10 </li>
-    <li id="regla10" class="oculto" data-texto="Regla 10: La encriptación debe incluir el número 100 ÷ 10"> Regla 10: La encriptación debe incluir el número 100 ÷ 10 </li>
-    <li id="regla9" class="oculto" data-texto="Regla 9: La encriptación debe incluir el número 8 ÷ 2"> Regla 9: La encriptación debe incluir el número 8 ÷ 2 </li>
-    <li id="regla8" class="oculto" data-texto="Regla 8: La encriptación debe incluir el número 985 x 472 + 1458"> Regla 8: La encriptación debe incluir el número 985 x 472 + 1458 </li>
-    <li id="regla7" class="oculto" data-texto="Regla 7: La encriptación debe incluir el número 389 x -545"> Regla 7: La encriptación debe incluir el número 389 x -545 </li>
-    <li id="regla6" class="oculto" data-texto="Regla 6: La encriptación debe incluir el número 12 x -15"> Regla 6: La encriptación debe incluir el número 12 x -15 </li>
-    <li id="regla5" class="oculto" data-texto="Regla 5: La encriptación debe incluir el número 5 x 5"> Regla 5: La encriptación debe incluir el número 5 x 5 </li>
-    <li id="regla4" class="oculto" data-texto="Regla 4: La encriptación debe incluir el número 489.654 - 652.389"> Regla 4: La encriptación debe incluir el número 489.654 - 652.389 </li>
-    <li id="regla3" class="oculto" data-texto="Regla 3: La encriptación debe incluir el número 127.452 + 385.635"> Regla 3: La encriptación debe incluir el número 127.452 + 385.635 </li>
-    <li id="regla2" class="oculto" data-texto="Regla 2: La encriptacion debe incluir el número es 8 - 5">Regla 2: La encriptacion debe incluir el número es 8 - 5</li>
-    <li id="regla1" data-texto="Regla 1: La encriptacion debe incluir el número es 1 + 1"> Regla 1: La encriptacion debe incluir el número es 1 + 1</li>
+  <ul id="reglas-container">
+    <!-- Las reglas se generarán dinámicamente -->
   </ul>
 
   <script>
+    // Función para generar números aleatorios
+    function aleatorioEntre(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    // Generadores de preguntas aleatorias
+    function pregunta1() {
+      const numero1 = aleatorioEntre(1, 10);
+      const numero2 = aleatorioEntre(1, 10);
+      const respuesta = numero1 + numero2;
+      return {
+        texto: `Regla 1: La encriptación debe incluir el número ${numero1} + ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta2() {
+      const numero1 = aleatorioEntre(1, 10);
+      const numero2 = aleatorioEntre(1, 10);
+      const respuesta = numero1 - numero2;
+      return {
+        texto: `Regla 2: La encriptación debe incluir el número ${numero1} - ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta3() {
+      const numero1 = aleatorioEntre(100000, 500000);
+      const numero2 = aleatorioEntre(100000, 500000);
+      const respuesta = numero1 + numero2;
+      return {
+        texto: `Regla 3: La encriptación debe incluir el número ${numero1.toLocaleString()} + ${numero2.toLocaleString()}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta4() {
+      const numero1 = aleatorioEntre(100000, 500000);
+      const numero2 = aleatorioEntre(100000, 500000);
+      const respuesta = numero1 - numero2;
+      return {
+        texto: `Regla 4: La encriptación debe incluir el número ${numero1.toLocaleString()} - ${numero2.toLocaleString()}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta5() {
+      const numero1 = aleatorioEntre(2, 10);
+      const numero2 = aleatorioEntre(2, 10);
+      const respuesta = numero1 * numero2;
+      return {
+        texto: `Regla 5: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta6() {
+      const numero1 = aleatorioEntre(10, 20);
+      const numero2 = aleatorioEntre(-20, -10);
+      const respuesta = numero1 * numero2;
+      return {
+        texto: `Regla 6: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta7() {
+      const numero1 = aleatorioEntre(100, 999);
+      const numero2 = aleatorioEntre(-999, -100);
+      const respuesta = numero1 * numero2;
+      return {
+        texto: `Regla 7: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta8() {
+      const numero1 = aleatorioEntre(100, 999);
+      const numero2 = aleatorioEntre(100, 999);
+      const numero3 = aleatorioEntre(1000, 9999);
+      const respuesta = numero1 * numero2 + numero3;
+      return {
+        texto: `Regla 8: La encriptación debe incluir el número ${numero1} x ${numero2} + ${numero3}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta9() {
+      const numero1 = aleatorioEntre(10, 100);
+      const numero2 = aleatorioEntre(2, 10);
+      // Asegurar división exacta
+      const numeroAjustado = numero1 - (numero1 % numero2);
+      const respuesta = numeroAjustado / numero2;
+      return {
+        texto: `Regla 9: La encriptación debe incluir el número ${numeroAjustado} ÷ ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta10() {
+      const numero1 = aleatorioEntre(100, 1000);
+      const numero2 = 10;
+      const respuesta = numero1 / numero2;
+      return {
+        texto: `Regla 10: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta11() {
+      const numero1 = aleatorioEntre(200, 2000);
+      const numero2 = aleatorioEntre(10, 20);
+      const respuesta = numero1 / numero2;
+      return {
+        texto: `Regla 11: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta12() {
+      const dividendo = aleatorioEntre(10, 50);
+      const divisor = aleatorioEntre(3, 9);
+      return {
+        texto: `Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        respuesta: dividendo.toString()
+      };
+    }
+
+    function pregunta13() {
+      const dividendo = aleatorioEntre(10, 50);
+      const divisor = aleatorioEntre(3, 9);
+      return {
+        texto: `Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        respuesta: divisor.toString()
+      };
+    }
+
+    function pregunta14() {
+      const dividendo = aleatorioEntre(10, 50);
+      const divisor = aleatorioEntre(3, 9);
+      const cociente = Math.floor(dividendo / divisor);
+      return {
+        texto: `Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        respuesta: cociente.toString()
+      };
+    }
+
+    function pregunta15() {
+      const dividendo = aleatorioEntre(10, 50);
+      const divisor = aleatorioEntre(3, 9);
+      const residuo = dividendo % divisor;
+      return {
+        texto: `Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        respuesta: residuo.toString()
+      };
+    }
+
+    function pregunta16() {
+      const dividendo = aleatorioEntre(10, 30);
+      const divisor = aleatorioEntre(3, 7);
+      const cociente = Math.floor(dividendo / divisor);
+      const residuo = dividendo % divisor;
+      const respuesta = dividendo * divisor * cociente * residuo;
+      return {
+        texto: `Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división ${dividendo} ÷ ${divisor}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta17() {
+      const base = 2;
+      const exponente = aleatorioEntre(5, 10);
+      const respuesta = Math.pow(base, exponente);
+      return {
+        texto: `Regla 17: La encriptación debe incluir el número ${base}^${exponente}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta18() {
+      const num1 = aleatorioEntre(3, 7);
+      const exp1 = aleatorioEntre(3, 5);
+      const num2 = aleatorioEntre(3, 9);
+      const exp2 = aleatorioEntre(3, 4);
+      const num3 = aleatorioEntre(3, 9);
+      const exp3 = aleatorioEntre(3, 4);
+      const respuesta = Math.pow(num1, exp1) + Math.pow(num2, exp2) + Math.pow(num3, exp3);
+      return {
+        texto: `Regla 18: La encriptación debe incluir el número ${num1}^${exp1} + ${num2}^${exp2} + ${num3}^${exp3}`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta19() {
+      const bases = [10, 100, 1000];
+      const numero = bases[aleatorioEntre(0, bases.length - 1)];
+      const respuesta = Math.log10(numero);
+      return {
+        texto: `Regla 19: La encriptación debe incluir el número log_10(${numero})`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta20() {
+      // Crear logaritmos que den resultados enteros
+      const logs = [
+        { base: 2, num: 8, res: 3 },
+        { base: 3, num: 27, res: 3 },
+        { base: 5, num: 125, res: 3 },
+        { base: 2, num: 16, res: 4 }
+      ];
+      const log1 = logs[aleatorioEntre(0, logs.length - 1)];
+      const log2 = logs[aleatorioEntre(0, logs.length - 1)];
+      const log3 = logs[aleatorioEntre(0, logs.length - 1)];
+      const respuesta = log1.res + log2.res + log3.res;
+      return {
+        texto: `Regla 20: La encriptación debe incluir el número log_${log1.base}(${log1.num}) + log_${log2.base}(${log2.num}) + log_${log3.base}(${log3.num})`,
+        respuesta: respuesta.toString()
+      };
+    }
+
+    // Generar todas las preguntas al cargar la página
+    const reglasConfig = [
+      pregunta1(),
+      pregunta2(),
+      pregunta3(),
+      pregunta4(),
+      pregunta5(),
+      pregunta6(),
+      pregunta7(),
+      pregunta8(),
+      pregunta9(),
+      pregunta10(),
+      pregunta11(),
+      pregunta12(),
+      pregunta13(),
+      pregunta14(),
+      pregunta15(),
+      pregunta16(),
+      pregunta17(),
+      pregunta18(),
+      pregunta19(),
+      pregunta20()
+    ].map(pregunta => ({
+      texto: pregunta.texto,
+      respuestas: [pregunta.respuesta]
+    }));
+
+    // Generar elementos HTML dinámicamente (en orden inverso para efecto pila)
+    const container = document.getElementById('reglas-container');
+    const reglas = [];
+    const desbloqueadas = [];
+
+    // Crear todos los elementos primero
+    reglasConfig.forEach((config, index) => {
+      const li = document.createElement('li');
+      li.id = `regla${index + 1}`;
+      li.className = index === 0 ? '' : 'oculto';
+      li.textContent = config.texto;
+      reglas.push(li);
+      desbloqueadas.push(index === 0);
+    });
+
+    // Agregar el primer elemento (regla 1) que siempre está visible
+    container.appendChild(reglas[0]);
+
     const input = document.getElementById('password');
-
-    const reglas = [
-      document.getElementById('regla1'),
-      document.getElementById('regla2'),
-      document.getElementById('regla3'),
-      document.getElementById('regla4'),
-      document.getElementById('regla5'),
-      document.getElementById('regla6'),
-      document.getElementById('regla7'),
-      document.getElementById('regla8'),
-      document.getElementById('regla9'),
-      document.getElementById('regla10'),
-      document.getElementById('regla11'),
-      document.getElementById('regla12'),
-      document.getElementById('regla13'),
-      document.getElementById('regla14'),
-      document.getElementById('regla15'),
-      document.getElementById('regla16'),
-      document.getElementById('regla17'),
-      document.getElementById('regla18'),
-      document.getElementById('regla19'),
-      document.getElementById('regla20')
-      
-    ];
-
-    const respuestasValidas = [
-      ['2'],   // regla 1
-      ['3'],   // regla 2
-      ['513087'],   // regla 3
-      ['-162735'], // regla 4
-      ['25'], // regla 5
-      ['-180'], // regla 6
-      ['-212005'], // regla 7
-      ['466378'], // regla 8
-      ['2'], // regla 9
-      ['10'], // regla 10
-      ['20'], // regla 11
-      ['11'], // regla 12
-      ['3'], // regla 13
-      ['3'], // regla 14
-      ['2'], // regla 15
-      ['198'], // regla 16
-      ['512'], // regla 17
-      ['13782'], // regla 18
-      ['2'], // regla 19
-      ['10'] // regla 20
-    ];
-
-    const desbloqueadas = [true, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false, false];
 
     input.addEventListener('input', () => {
       const partes = input.value.split('#').map(p => p.trim());
@@ -115,7 +314,7 @@
 
       for (let i = 0; i < reglas.length; i++) {
         const regla = reglas[i];
-        const respuestas = respuestasValidas[i];
+        const respuestas = reglasConfig[i].respuestas;
 
         if (desbloqueadas[i]) {
           regla.classList.remove('oculto');
@@ -126,12 +325,13 @@
             regla.className = 'fail';
             todasCorrectas = false;
           }
-          regla.textContent = regla.dataset.texto;
         } else {
           // Solo se desbloquea la siguiente si todas las anteriores están correctas
           if (todasCorrectas) {
             desbloqueadas[i] = true;
             reglas[i].classList.remove('oculto');
+            // Insertar la nueva regla al principio de la lista (efecto pila)
+            container.insertBefore(reglas[i], container.firstChild);
             // IMPORTANTE: detenemos aquí para evitar desbloquear más de una por input
             break;
           } else {
@@ -141,5 +341,6 @@
       }
     });
   </script>
+  
 </body>
 </html>
