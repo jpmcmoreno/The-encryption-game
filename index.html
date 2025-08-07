@@ -4,6 +4,21 @@
   <meta charset="UTF-8">
   <title>The encryption game</title>
 
+    <!-- MathJax para LaTeX -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      svg: {
+        fontCache: 'global'
+      }
+    };
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
+
+
   <style>
     body {
       font-family: sans-serif;
@@ -38,6 +53,11 @@
   <ul id="reglas-container">
     <!-- Las reglas se generarán dinámicamente -->
   </ul>
+
+  <div id="victoria" style="display: none;">
+    <h1>¡Ganaste!</h1>
+    <p>Has completado todas las reglas correctamente</p>
+  </div>
 
   <script>
     // Función para generar números aleatorios
@@ -140,8 +160,8 @@
     }
 
     function pregunta10() {
-      const numero1 = aleatorioEntre(100, 1000);
       const numero2 = 10;
+      const numero1 = numero2 * aleatorioEntre(10, 100);
       const respuesta = numero1 / numero2;
       return {
         texto: `Regla 10: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
@@ -150,8 +170,8 @@
     }
 
     function pregunta11() {
-      const numero1 = aleatorioEntre(200, 2000);
       const numero2 = aleatorioEntre(10, 20);
+      const numero1 = numero2 * aleatorioEntre(20, 200);
       const respuesta = numero1 / numero2;
       return {
         texto: `Regla 11: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
@@ -214,7 +234,7 @@
       const exponente = aleatorioEntre(5, 10);
       const respuesta = Math.pow(base, exponente);
       return {
-        texto: `Regla 17: La encriptación debe incluir el número ${base}^${exponente}`,
+        texto: `Regla 17: La encriptación debe incluir el número $${base}^${exponente}$`,
         respuesta: respuesta.toString()
       };
     }
@@ -228,7 +248,7 @@
       const exp3 = aleatorioEntre(3, 4);
       const respuesta = Math.pow(num1, exp1) + Math.pow(num2, exp2) + Math.pow(num3, exp3);
       return {
-        texto: `Regla 18: La encriptación debe incluir el número ${num1}^${exp1} + ${num2}^${exp2} + ${num3}^${exp3}`,
+        texto: `Regla 18: La encriptación debe incluir el número $${num1}^${exp1} + ${num2}^${exp2} + ${num3}^${exp3}$`,
         respuesta: respuesta.toString()
       };
     }
@@ -238,7 +258,7 @@
       const numero = bases[aleatorioEntre(0, bases.length - 1)];
       const respuesta = Math.log10(numero);
       return {
-        texto: `Regla 19: La encriptación debe incluir el número log_10(${numero})`,
+        texto: `Regla 19: La encriptación debe incluir el número $\\log_{10}(${numero})$`,
         respuesta: respuesta.toString()
       };
     }
@@ -256,7 +276,33 @@
       const log3 = logs[aleatorioEntre(0, logs.length - 1)];
       const respuesta = log1.res + log2.res + log3.res;
       return {
-        texto: `Regla 20: La encriptación debe incluir el número log_${log1.base}(${log1.num}) + log_${log2.base}(${log2.num}) + log_${log3.base}(${log3.num})`,
+        texto: `Regla 20: La encriptación debe incluir el número $\\log_{${log1.base}}(${log1.num}) + \\log_{${log2.base}}(${log2.num}) + \\log_{${log3.base}}(${log3.num})$`,
+        respuesta: respuesta.toString()
+      };
+
+    }
+        function pregunta21() {
+      const num1 = aleatorioEntre(10,99);
+      const num2 = aleatorioEntre(10,99);
+      const num4 = aleatorioEntre(1,10);
+      const num3 = num4 * aleatorioEntre(10,99);
+      const num5 = aleatorioEntre(10,99);
+      const num6 = aleatorioEntre(10,99);
+      const respuesta = num1 + num2 * num3 / num4 * num5 + num6
+
+      return {
+        texto: `Regla 21: La encriptación debe incluir el número ${num1} + ${num2} × ${num3} ÷ ${num4} × ${num5} + ${num6} `, 
+        respuesta: respuesta.toString()
+      };
+    }
+
+    function pregunta22(){
+      const num2 = aleatorioEntre(2,9);
+      const num1 = num2 * aleatorioEntre(11,50);
+      const respuesta = num1 / num2;
+
+      return{
+        texto: `Regla 22: La encriptación debe incluir el número $\\frac{${num1}}{${num2}}$`,
         respuesta: respuesta.toString()
       };
     }
@@ -282,7 +328,9 @@
       pregunta17(),
       pregunta18(),
       pregunta19(),
-      pregunta20()
+      pregunta20(),
+      pregunta21(),
+      pregunta22()
     ].map(pregunta => ({
       texto: pregunta.texto,
       respuestas: [pregunta.respuesta]
@@ -311,6 +359,7 @@
     input.addEventListener('input', () => {
       const partes = input.value.split('#').map(p => p.trim());
       let todasCorrectas = true;
+      let reglasCompletadas = 0;
 
       for (let i = 0; i < reglas.length; i++) {
         const regla = reglas[i];
@@ -321,6 +370,7 @@
           const coincide = partes.some(parte => respuestas.includes(parte));
           if (coincide) {
             regla.className = 'ok';
+            reglasCompletadas++;
           } else {
             regla.className = 'fail';
             todasCorrectas = false;
@@ -332,6 +382,14 @@
             reglas[i].classList.remove('oculto');
             // Insertar la nueva regla al principio de la lista (efecto pila)
             container.insertBefore(reglas[i], container.firstChild);
+            
+            // Procesar LaTeX en la nueva regla
+            if (window.MathJax) {
+              MathJax.typesetPromise([reglas[i]]).catch(function (err) {
+                console.log('MathJax error:', err.message);
+              });
+            }
+            
             // IMPORTANTE: detenemos aquí para evitar desbloquear más de una por input
             break;
           } else {
@@ -339,7 +397,24 @@
           }
         }
       }
+
+      // Verificar si se completaron todas las reglas
+      if (reglasCompletadas === reglas.length) {
+        document.getElementById('victoria').style.display = 'block';
+        container.style.display = 'none';
+        input.style.display = 'none';
+      }
     });
+
+    // Procesar LaTeX inicial cuando MathJax esté listo
+    window.addEventListener('load', function() {
+      if (window.MathJax) {
+        MathJax.typesetPromise([container]).catch(function (err) {
+          console.log('MathJax initial error:', err.message);
+        });
+      }
+    });
+
   </script>
   
 </body>
