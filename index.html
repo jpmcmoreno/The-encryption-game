@@ -2,9 +2,9 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>The encryption game</title>
+  <title>The Encryption Game</title>
 
-    <!-- MathJax para LaTeX -->
+  <!-- MathJax para LaTeX -->
   <script>
     window.MathJax = {
       tex: {
@@ -18,45 +18,306 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-mml-chtml.min.js"></script>
 
-
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 50px auto;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
     }
 
-    input {
-      width: 100%;
-      padding: 10px;
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+      color: white;
+    }
+
+    .title {
+      font-size: 2.5em;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .subtitle {
       font-size: 1.2em;
+      opacity: 0.9;
     }
 
-    li {
-      margin-top: 10px;
+    .input-container {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 25px;
+      margin-bottom: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+      backdrop-filter: blur(10px);
+    }
+
+    .input-label {
       font-size: 1.1em;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 10px;
+      display: block;
     }
 
-    .ok { color: green; }
-    .fail { color: red; }
-    .oculto { display: none; }
-  </style>
+    .password-input {
+      width: 100%;
+      padding: 15px 20px;
+      font-size: 1.2em;
+      border: 2px solid #e0e0e0;
+      border-radius: 10px;
+      outline: none;
+      transition: all 0.3s ease;
+      background: white;
+    }
 
+    .password-input:focus {
+      border-color: #667eea;
+      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    }
+
+    .rules-container {
+      display: grid;
+      gap: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    }
+
+    .rule-card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      border-left: 5px solid #ccc;
+      transition: all 0.3s ease;
+      transform: translateY(0);
+      backdrop-filter: blur(10px);
+    }
+
+    .rule-card.hidden {
+      display: none;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .rule-card.correct {
+      border-left-color: #4CAF50;
+      background: rgba(76, 175, 80, 0.1);
+      animation: correctPulse 0.6s ease;
+    }
+
+    .rule-card.incorrect {
+      border-left-color: #f44336;
+      background: rgba(244, 67, 54, 0.1);
+      animation: incorrectShake 0.6s ease;
+    }
+
+    .rule-card.pending {
+      border-left-color: #ff9800;
+      background: rgba(255, 152, 0, 0.1);
+    }
+
+    @keyframes correctPulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes incorrectShake {
+      0%, 20%, 40%, 60%, 80% { transform: translateX(0); }
+      10%, 30%, 50%, 70% { transform: translateX(-5px); }
+      15%, 35%, 55%, 75% { transform: translateX(5px); }
+    }
+
+    .rule-number {
+      display: inline-block;
+      background: #667eea;
+      color: white;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      text-align: center;
+      line-height: 30px;
+      font-weight: bold;
+      font-size: 0.9em;
+      margin-right: 15px;
+      flex-shrink: 0;
+    }
+
+    .rule-card.correct .rule-number {
+      background: #4CAF50;
+    }
+
+    .rule-card.incorrect .rule-number {
+      background: #f44336;
+    }
+
+    .rule-card.pending .rule-number {
+      background: #ff9800;
+    }
+
+    .rule-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+    }
+
+    .rule-text {
+      font-size: 1.1em;
+      color: #333;
+      line-height: 1.5;
+      flex: 1;
+    }
+
+    .rule-status {
+      margin-left: auto;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    .rule-card.correct .rule-status::after {
+      content: "✓";
+      color: #4CAF50;
+    }
+
+    .rule-card.incorrect .rule-status::after {
+      content: "✗";
+      color: #f44336;
+    }
+
+    .rule-card.pending .rule-status::after {
+      content: "⏳";
+      color: #ff9800;
+    }
+
+    .victory {
+      background: rgba(76, 175, 80, 0.95);
+      color: white;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      backdrop-filter: blur(10px);
+      animation: victoryBounce 1s ease;
+    }
+
+    @keyframes victoryBounce {
+      0%, 20%, 40%, 60%, 80% { transform: translateY(0); }
+      10%, 30%, 50%, 70% { transform: translateY(-10px); }
+    }
+
+    .victory h1 {
+      font-size: 3em;
+      margin-bottom: 20px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+
+    .victory p {
+      font-size: 1.3em;
+      opacity: 0.9;
+    }
+
+    .progress-bar {
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 10px;
+      height: 8px;
+      margin: 20px 0;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: linear-gradient(90deg, #4CAF50, #8BC34A);
+      height: 100%;
+      border-radius: 10px;
+      transition: width 0.5s ease;
+      width: 0%;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-between;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 20px;
+      color: white;
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-number {
+      font-size: 1.5em;
+      font-weight: bold;
+      display: block;
+    }
+
+    .stat-label {
+      font-size: 0.9em;
+      opacity: 0.8;
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body>
-  <h1>The # encryption # game</h1>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">🔐 The Encryption Game</h1>
+      <p class="subtitle">Resuelve las reglas y agrega '#' entre cada respuesta</p>
+    </div>
 
-  <h2> Para seguir cifrando por favor agregar un '#' </h2>
+    <div class="stats">
+      <div class="stat-item">
+        <span class="stat-number" id="completed-count">0</span>
+        <span class="stat-label">Completadas</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="total-count">22</span>
+        <span class="stat-label">Total</span>
+      </div>
+      <div class="stat-item">
+        <span class="stat-number" id="progress-percent">0%</span>
+        <span class="stat-label">Progreso</span>
+      </div>
+    </div>
 
-  <input type="text" id="password" placeholder="Escribe tu contraseña aquí">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
 
-  <ul id="reglas-container">
-    <!-- Las reglas se generarán dinámicamente -->
-  </ul>
+    <div class="input-container">
+      <label class="input-label" for="password">Ingresa tu encriptación:</label>
+      <input type="text" id="password" class="password-input" placeholder="Escribe las respuestas separadas por '#'">
+    </div>
 
-  <div id="victoria" style="display: none;">
-    <h1>¡Ganaste!</h1>
-    <p>Has completado todas las reglas correctamente</p>
+    <div class="rules-container" id="rules-container">
+      <!-- Las reglas se generarán dinámicamente -->
+    </div>
+
+    <div id="victory" class="victory" style="display: none;">
+      <h1>🎉 ¡Felicitaciones! 🎉</h1>
+      <p>Has completado todas las reglas correctamente.<br>¡Eres un maestro de la encriptación!</p>
+    </div>
   </div>
 
   <script>
@@ -71,7 +332,7 @@
       const numero2 = aleatorioEntre(1, 10);
       const respuesta = numero1 + numero2;
       return {
-        texto: `Regla 1: La encriptación debe incluir el número ${numero1} + ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} + ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -81,7 +342,7 @@
       const numero2 = aleatorioEntre(1, 10);
       const respuesta = numero1 - numero2;
       return {
-        texto: `Regla 2: La encriptación debe incluir el número ${numero1} - ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} - ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -91,7 +352,7 @@
       const numero2 = aleatorioEntre(100000, 500000);
       const respuesta = numero1 + numero2;
       return {
-        texto: `Regla 3: La encriptación debe incluir el número ${numero1.toLocaleString()} + ${numero2.toLocaleString()}`,
+        texto: `La encriptación debe incluir el número ${numero1.toLocaleString()} + ${numero2.toLocaleString()}`,
         respuesta: respuesta.toString()
       };
     }
@@ -101,7 +362,7 @@
       const numero2 = aleatorioEntre(100000, 500000);
       const respuesta = numero1 - numero2;
       return {
-        texto: `Regla 4: La encriptación debe incluir el número ${numero1.toLocaleString()} - ${numero2.toLocaleString()}`,
+        texto: `La encriptación debe incluir el número ${numero1.toLocaleString()} - ${numero2.toLocaleString()}`,
         respuesta: respuesta.toString()
       };
     }
@@ -111,7 +372,7 @@
       const numero2 = aleatorioEntre(2, 10);
       const respuesta = numero1 * numero2;
       return {
-        texto: `Regla 5: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} x ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -121,7 +382,7 @@
       const numero2 = aleatorioEntre(-20, -10);
       const respuesta = numero1 * numero2;
       return {
-        texto: `Regla 6: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} x ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -131,7 +392,7 @@
       const numero2 = aleatorioEntre(-999, -100);
       const respuesta = numero1 * numero2;
       return {
-        texto: `Regla 7: La encriptación debe incluir el número ${numero1} x ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} x ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -142,7 +403,7 @@
       const numero3 = aleatorioEntre(1000, 9999);
       const respuesta = numero1 * numero2 + numero3;
       return {
-        texto: `Regla 8: La encriptación debe incluir el número ${numero1} x ${numero2} + ${numero3}`,
+        texto: `La encriptación debe incluir el número ${numero1} x ${numero2} + ${numero3}`,
         respuesta: respuesta.toString()
       };
     }
@@ -150,11 +411,10 @@
     function pregunta9() {
       const numero1 = aleatorioEntre(10, 100);
       const numero2 = aleatorioEntre(2, 10);
-      // Asegurar división exacta
       const numeroAjustado = numero1 - (numero1 % numero2);
       const respuesta = numeroAjustado / numero2;
       return {
-        texto: `Regla 9: La encriptación debe incluir el número ${numeroAjustado} ÷ ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numeroAjustado} ÷ ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -164,7 +424,7 @@
       const numero1 = numero2 * aleatorioEntre(10, 100);
       const respuesta = numero1 / numero2;
       return {
-        texto: `Regla 10: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -174,7 +434,7 @@
       const numero1 = numero2 * aleatorioEntre(20, 200);
       const respuesta = numero1 / numero2;
       return {
-        texto: `Regla 11: La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
+        texto: `La encriptación debe incluir el número ${numero1} ÷ ${numero2}`,
         respuesta: respuesta.toString()
       };
     }
@@ -183,7 +443,7 @@
       const dividendo = aleatorioEntre(10, 50);
       const divisor = aleatorioEntre(3, 9);
       return {
-        texto: `Regla 12: La encriptación debe incluir el número del 'dividendo' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        texto: `La encriptación debe incluir el 'dividendo' de la división ${dividendo} ÷ ${divisor}`,
         respuesta: dividendo.toString()
       };
     }
@@ -192,7 +452,7 @@
       const dividendo = aleatorioEntre(10, 50);
       const divisor = aleatorioEntre(3, 9);
       return {
-        texto: `Regla 13: La encriptación debe incluir el número del 'divisor' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        texto: `La encriptación debe incluir el 'divisor' de la división ${dividendo} ÷ ${divisor}`,
         respuesta: divisor.toString()
       };
     }
@@ -202,7 +462,7 @@
       const divisor = aleatorioEntre(3, 9);
       const cociente = Math.floor(dividendo / divisor);
       return {
-        texto: `Regla 14: La encriptación debe incluir el número del 'cociente' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        texto: `La encriptación debe incluir el 'cociente' de la división ${dividendo} ÷ ${divisor}`,
         respuesta: cociente.toString()
       };
     }
@@ -212,7 +472,7 @@
       const divisor = aleatorioEntre(3, 9);
       const residuo = dividendo % divisor;
       return {
-        texto: `Regla 15: La encriptación debe incluir el número del 'residuo' de la siguiente división ${dividendo} ÷ ${divisor}`,
+        texto: `La encriptación debe incluir el 'residuo' de la división ${dividendo} ÷ ${divisor}`,
         respuesta: residuo.toString()
       };
     }
@@ -224,7 +484,7 @@
       const residuo = dividendo % divisor;
       const respuesta = dividendo * divisor * cociente * residuo;
       return {
-        texto: `Regla 16: La encriptación debe incluir el número dado por el resultado de multiplicar el dividendo, divisor, cociente y residuo de la siguiente división ${dividendo} ÷ ${divisor}`,
+        texto: `La encriptación debe incluir el resultado de multiplicar el dividendo, divisor, cociente y residuo de ${dividendo} ÷ ${divisor}`,
         respuesta: respuesta.toString()
       };
     }
@@ -234,7 +494,7 @@
       const exponente = aleatorioEntre(5, 10);
       const respuesta = Math.pow(base, exponente);
       return {
-        texto: `Regla 17: La encriptación debe incluir el número $${base}^${exponente}$`,
+        texto: `La encriptación debe incluir el número $${base}^${exponente}$`,
         respuesta: respuesta.toString()
       };
     }
@@ -248,7 +508,7 @@
       const exp3 = aleatorioEntre(3, 4);
       const respuesta = Math.pow(num1, exp1) + Math.pow(num2, exp2) + Math.pow(num3, exp3);
       return {
-        texto: `Regla 18: La encriptación debe incluir el número $${num1}^${exp1} + ${num2}^${exp2} + ${num3}^${exp3}$`,
+        texto: `La encriptación debe incluir el número $${num1}^${exp1} + ${num2}^${exp2} + ${num3}^${exp3}$`,
         respuesta: respuesta.toString()
       };
     }
@@ -258,13 +518,12 @@
       const numero = bases[aleatorioEntre(0, bases.length - 1)];
       const respuesta = Math.log10(numero);
       return {
-        texto: `Regla 19: La encriptación debe incluir el número $\\log_{10}(${numero})$`,
+        texto: `La encriptación debe incluir el número $\\log_{10}(${numero})$`,
         respuesta: respuesta.toString()
       };
     }
 
     function pregunta20() {
-      // Crear logaritmos que den resultados enteros
       const logs = [
         { base: 2, num: 8, res: 3 },
         { base: 3, num: 27, res: 3 },
@@ -276,22 +535,22 @@
       const log3 = logs[aleatorioEntre(0, logs.length - 1)];
       const respuesta = log1.res + log2.res + log3.res;
       return {
-        texto: `Regla 20: La encriptación debe incluir el número $\\log_{${log1.base}}(${log1.num}) + \\log_{${log2.base}}(${log2.num}) + \\log_{${log3.base}}(${log3.num})$`,
+        texto: `La encriptación debe incluir el número $\\log_{${log1.base}}(${log1.num}) + \\log_{${log2.base}}(${log2.num}) + \\log_{${log3.base}}(${log3.num})$`,
         respuesta: respuesta.toString()
       };
-
     }
-        function pregunta21() {
+
+    function pregunta21() {
       const num1 = aleatorioEntre(10,99);
       const num2 = aleatorioEntre(10,99);
       const num4 = aleatorioEntre(1,10);
       const num3 = num4 * aleatorioEntre(10,99);
       const num5 = aleatorioEntre(10,99);
       const num6 = aleatorioEntre(10,99);
-      const respuesta = num1 + num2 * num3 / num4 * num5 + num6
+      const respuesta = num1 + num2 * num3 / num4 * num5 + num6;
 
       return {
-        texto: `Regla 21: La encriptación debe incluir el número ${num1} + ${num2} × ${num3} ÷ ${num4} × ${num5} + ${num6} `, 
+        texto: `La encriptación debe incluir el número ${num1} + ${num2} × ${num3} ÷ ${num4} × ${num5} + ${num6}`,
         respuesta: respuesta.toString()
       };
     }
@@ -302,59 +561,60 @@
       const respuesta = num1 / num2;
 
       return{
-        texto: `Regla 22: La encriptación debe incluir el número $\\frac{${num1}}{${num2}}$`,
+        texto: `La encriptación debe incluir el número $\\frac{${num1}}{${num2}}$`,
         respuesta: respuesta.toString()
       };
     }
 
-    // Generar todas las preguntas al cargar la página
+    // Generar todas las preguntas
     const reglasConfig = [
-      pregunta1(),
-      pregunta2(),
-      pregunta3(),
-      pregunta4(),
-      pregunta5(),
-      pregunta6(),
-      pregunta7(),
-      pregunta8(),
-      pregunta9(),
-      pregunta10(),
-      pregunta11(),
-      pregunta12(),
-      pregunta13(),
-      pregunta14(),
-      pregunta15(),
-      pregunta16(),
-      pregunta17(),
-      pregunta18(),
-      pregunta19(),
-      pregunta20(),
-      pregunta21(),
-      pregunta22()
+      pregunta1(), pregunta2(), pregunta3(), pregunta4(), pregunta5(),
+      pregunta6(), pregunta7(), pregunta8(), pregunta9(), pregunta10(),
+      pregunta11(), pregunta12(), pregunta13(), pregunta14(), pregunta15(),
+      pregunta16(), pregunta17(), pregunta18(), pregunta19(), pregunta20(),
+      pregunta21(), pregunta22()
     ].map(pregunta => ({
       texto: pregunta.texto,
       respuestas: [pregunta.respuesta]
     }));
 
-    // Generar elementos HTML dinámicamente (en orden inverso para efecto pila)
-    const container = document.getElementById('reglas-container');
+    // Variables globales
+    const container = document.getElementById('rules-container');
+    const input = document.getElementById('password');
+    const completedCount = document.getElementById('completed-count');
+    const progressPercent = document.getElementById('progress-percent');
+    const progressFill = document.getElementById('progress-fill');
     const reglas = [];
     const desbloqueadas = [];
 
-    // Crear todos los elementos primero
+    // Crear elementos de reglas
     reglasConfig.forEach((config, index) => {
-      const li = document.createElement('li');
-      li.id = `regla${index + 1}`;
-      li.className = index === 0 ? '' : 'oculto';
-      li.textContent = config.texto;
-      reglas.push(li);
+      const card = document.createElement('div');
+      card.className = `rule-card ${index === 0 ? 'pending' : 'hidden'}`;
+      card.id = `regla${index + 1}`;
+      
+      card.innerHTML = `
+        <div class="rule-content">
+          <div class="rule-number">${index + 1}</div>
+          <div class="rule-text">${config.texto}</div>
+          <div class="rule-status"></div>
+        </div>
+      `;
+      
+      reglas.push(card);
       desbloqueadas.push(index === 0);
+      
+      if (index === 0) {
+        container.appendChild(card);
+      }
     });
 
-    // Agregar el primer elemento (regla 1) que siempre está visible
-    container.appendChild(reglas[0]);
-
-    const input = document.getElementById('password');
+    function updateStats(completed, total) {
+      completedCount.textContent = completed;
+      const percent = Math.round((completed / total) * 100);
+      progressPercent.textContent = `${percent}%`;
+      progressFill.style.width = `${percent}%`;
+    }
 
     input.addEventListener('input', () => {
       const partes = input.value.split('#').map(p => p.trim());
@@ -366,47 +626,54 @@
         const respuestas = reglasConfig[i].respuestas;
 
         if (desbloqueadas[i]) {
-          regla.classList.remove('oculto');
+          regla.classList.remove('hidden');
           const coincide = partes.some(parte => respuestas.includes(parte));
+          
+          regla.classList.remove('correct', 'incorrect', 'pending');
+          
           if (coincide) {
-            regla.className = 'ok';
+            regla.classList.add('correct');
             reglasCompletadas++;
           } else {
-            regla.className = 'fail';
+            regla.classList.add('incorrect');
             todasCorrectas = false;
           }
         } else {
-          // Solo se desbloquea la siguiente si todas las anteriores están correctas
           if (todasCorrectas) {
             desbloqueadas[i] = true;
-            reglas[i].classList.remove('oculto');
-            // Insertar la nueva regla al principio de la lista (efecto pila)
+            reglas[i].classList.remove('hidden');
+            reglas[i].classList.add('pending', 'fade-in');
             container.insertBefore(reglas[i], container.firstChild);
             
-            // Procesar LaTeX en la nueva regla
+            // Procesar LaTeX
             if (window.MathJax) {
               MathJax.typesetPromise([reglas[i]]).catch(function (err) {
                 console.log('MathJax error:', err.message);
               });
             }
             
-            // IMPORTANTE: detenemos aquí para evitar desbloquear más de una por input
             break;
           } else {
-            break; // si anteriores están mal, no desbloquees esta ni las siguientes
+            break;
           }
         }
       }
 
-      // Verificar si se completaron todas las reglas
+      updateStats(reglasCompletadas, reglas.length);
+
+      // Verificar victoria
       if (reglasCompletadas === reglas.length) {
-        document.getElementById('victoria').style.display = 'block';
-        container.style.display = 'none';
-        input.style.display = 'none';
+        setTimeout(() => {
+          document.getElementById('victory').style.display = 'block';
+          container.style.display = 'none';
+          document.querySelector('.input-container').style.display = 'none';
+          document.querySelector('.stats').style.display = 'none';
+          document.querySelector('.progress-bar').style.display = 'none';
+        }, 500);
       }
     });
 
-    // Procesar LaTeX inicial cuando MathJax esté listo
+    // Procesar LaTeX inicial
     window.addEventListener('load', function() {
       if (window.MathJax) {
         MathJax.typesetPromise([container]).catch(function (err) {
@@ -415,7 +682,8 @@
       }
     });
 
+    // Inicializar estadísticas
+    updateStats(0, reglas.length);
   </script>
-  
 </body>
 </html>
